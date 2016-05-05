@@ -52,6 +52,7 @@ class Compilador extends IntentService {
         reservadas[4] = "soltar";
         reservadas[5] = "pegar";
 
+
         //Compara o codigo do usuario com as palavras reservadas e salva o comando para o arduino
         for (String comandoUser : codigoUser) {
             for (int i = 0; i < reservadas.length; i++) {
@@ -61,6 +62,8 @@ class Compilador extends IntentService {
 
             }
         }
+
+        Intent mIntent = new Intent(this, nomeDaClasse.class);
+        mIntent.putExtra("codArduino", enviarArduino);
     }
 }
-
