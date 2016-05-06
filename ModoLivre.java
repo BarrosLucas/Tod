@@ -30,15 +30,24 @@ public class ModoLivre extends AppCompatActivity {
     static InputStream input;
     static OutputStream output;
     TextView texto;
+    private String codigo;
+    private String status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modo_livre);
+        Intent inte = getIntent();
+        codigo = inte.getStringExtra("codigo");
+        status = inte.getStringExtra("status");
         texto = (TextView) findViewById(R.id.tMsgRecebidas);
+        EditText msg = (EditText) findViewById(R.id.tMsg);
+        msg.setText(codigo);
         bt = BluetoothAdapter.getDefaultAdapter();
         if (bt != null){ //Celular suporta bluetooth
             if (bt.isEnabled()){
-                conect();
+                if (status.equals("1")) {
+                    conect();
+                }
                 listener();
             }else{
                 //Bora ligar
@@ -97,10 +106,24 @@ public class ModoLivre extends AppCompatActivity {
     }
     public void send(String msg) throws IOException {
         if(output!=null){
-            texto.setText("Mandando");
             output.write(msg.getBytes());
         }else{
-            texto.setText("Ainda dá erro");
+            texto.setText("Problemas no envio");
         }
     }
+    public void save(View view){
+        TextView mensa = (TextView) findViewById(R.id.tMsg);
+        String mensag = mensa.getText().toString();
+
+        Intent intent = new Intent(this, Save.class);
+        intent.putExtra("codigo",mensag);
+
+        startActivity(intent);
+    }
+
+    public void open(View view){
+        Intent intent = new Intent(this, Open.class);
+        startActivity(intent);
+    }
+
 }
